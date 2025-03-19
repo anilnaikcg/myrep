@@ -1,0 +1,60 @@
+﻿@page "/blogs"
+@inject HttpClient Http
+
+<PageTitle>Blogs</PageTitle>
+
+<h1>Blogs</h1>
+
+<p>This component demonstrates fetching data from the service.</p>
+
+@if (bloglist == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>Author</th>
+                <th>ImageUrl</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var blog in bloglist)
+            {
+                <tr>
+                    <td>@blog.Id</td>
+                    <td>@blog.Description</td>
+                    <td>@blog.Author</td>
+                    <td>@blog.ImageUrl</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+       private Blog[]? bloglist;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // bloglist = await Http.GetFromJsonAsync<Blog[]>("sample-data/weather.json");
+        // bloglist = await Http.GetFromJsonAsync<Blog[]>($"api/GetAll");
+        bloglist = await Http.GetFromJsonAsync<Blog[]>($"api/Blog");
+       // bloglist = await Http.GetFromJsonAsync<Blog[]>($"http://localhost:5286/api/Blog");
+    
+    }
+
+     
+    public class Blog
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public string Author { get; set; }
+        public string ImageUrl { get; set; }
+    }
+}
